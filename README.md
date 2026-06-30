@@ -2,6 +2,12 @@
 
 A Cursor Agent Skill that surfaces your highest-priority Jira ticket each day, eliminating the need to manually triage your backlog. It connects to Jira via the `mcp-atlassian` MCP server and delivers a structured daily briefing directly in your editor.
 
+## The Problem
+
+Developers typically plan work around EPICs — large bodies of work broken into individual tickets that span weeks or an entire quarter. When an EPIC has 10, 20, or 50 tickets, deciding *which one to pick up next* becomes a daily friction point. You open Jira, scan the board, weigh priorities, check what's blocked, and try to remember what you were working on yesterday. This context-switching tax adds up.
+
+This skill eliminates that overhead. You point it at your quarterly EPICs, and each day it tells you exactly what to focus on — whether that's finishing an in-progress ticket or picking up the highest-priority unstarted one. Over time, it learns your work patterns and adapts its recommendations accordingly.
+
 ## What It Does
 
 When invoked, the skill:

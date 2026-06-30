@@ -1,0 +1,9 @@
+{
+  "project_key": "PROJ",
+  "epic_keys": ["PROJ-100", "PROJ-200", "PROJ-300"],
+  "assignee": "currentUser()",
+  "quarter": "Q3-2026",
+  "jira_base_url": "https://your-org.atlassian.net",
+  "done_statuses": ["Done", "Closed", "Resolved"],
+  "in_progress_statuses": ["In Progress", "Review"]
+}

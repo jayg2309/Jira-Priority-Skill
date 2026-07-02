@@ -4,9 +4,9 @@ A Cursor Agent Skill that surfaces your highest-priority Jira ticket each day, e
 
 ## The Problem
 
-Developers typically plan work around EPICs — large bodies of work broken into individual tickets that span weeks or an entire quarter. When an EPIC has 10, 20, or 50 tickets, deciding *which one to pick up next* becomes a daily friction point. You open Jira, scan the board, weigh priorities, check what's blocked, and try to remember what you were working on yesterday. This context-switching tax adds up.
+Developers typically plan work around EPICs -> large bodies of work broken into individual tickets that span weeks or an entire quarter. When an EPIC has 10, 20, or 50 tickets, deciding *which one to pick up next* becomes a daily friction point. You open Jira, scan the board, weigh priorities, check what's blocked, and try to remember what you were working on yesterday. This context-switching tax adds up.
 
-This skill eliminates that overhead. You point it at your quarterly EPICs, and each day it tells you exactly what to focus on — whether that's finishing an in-progress ticket or picking up the highest-priority unstarted one. Over time, it learns your work patterns and adapts its recommendations accordingly.
+This skill eliminates that overhead. You point it at your quarterly EPICs, and each day it tells you exactly what to focus on — whether that's finishing an in-progress ticket or picking up the highest-priority unstarted one.
 
 ## What It Does
 
@@ -24,10 +24,10 @@ The output is a formatted briefing with the ticket's summary, description, prior
 
 ## How Priority Is Resolved
 
-When multiple tickets compete for attention, the skill starts with static
-rules and layers on learned preferences that evolve over time.
+When multiple tickets compete for attention, the skill uses these rules
+in order:
 
-### Static rules (baseline)
+### Static rules
 
 | Precedence | Rule |
 |-----------|------|
@@ -36,30 +36,8 @@ rules and layers on learned preferences that evolve over time.
 | 3rd | EPIC order in `config.json` (earlier = higher priority) |
 | 4th | Creation date (older tickets first) |
 
-### Adaptive learning
-
-The skill learns from your behavior across invocations:
-
-1. **Decision log** — Every time the skill runs, it records which ticket
-   was surfaced, why, what the alternatives were, and your feedback
-   (accepted, overrode, or no response). This log lives in
-   `PRIORITY-LOGIC.md` Section 3.
-
-2. **Learned preferences** — After 5+ logged decisions, the skill
-   synthesizes patterns (e.g. "user prefers finishing Review tickets
-   before starting new work", "EPIC-A is favored on Mondays"). These
-   are written to `PRIORITY-LOGIC.md` Section 2 and override static
-   rules when they conflict.
-
-3. **Feedback loop** — If you disagree with a recommendation and say
-   something like "no, I'll work on X instead", the skill records the
-   override and factors it into future decisions.
-
-Over time, the briefing becomes tailored to how you actually prioritize
-rather than relying solely on Jira's priority field.
-
-See [PRIORITY-LOGIC.md](PRIORITY-LOGIC.md) for the full breakdown,
-learned preferences, and the decision log.
+See [PRIORITY-LOGIC.md](jira-daily-focus/PRIORITY-LOGIC.md) for the full
+breakdown of the selection algorithm.
 
 ## Installation
 
@@ -148,15 +126,11 @@ Type `/jira-daily-focus` in Cursor chat, or ask naturally:
 ```
 .cursor/skills/jira-daily-focus/
 ├── SKILL.md              # Skill instructions (read by the agent)
-├── PRIORITY-LOGIC.md     # Priority rules + learned preferences + decision log
+├── PRIORITY-LOGIC.md     # Priority rules and selection algorithm
 ├── config.json           # Your personal configuration (gitignored if needed)
 ├── config-example.json   # Example config for reference
 └── README.md             # This file
 ```
-
-`PRIORITY-LOGIC.md` grows over time as the decision log accumulates
-entries. When the log reaches 10+ entries, older entries are archived
-into a comment block to keep the file readable.
 
 ## Updating for a New Quarter
 
@@ -172,5 +146,3 @@ When the quarter rolls over or your EPICs change:
 - Pagination means very large EPICs (50+ tickets) require multiple API calls
 - The skill reads Jira's priority field as-is — if your team doesn't set priorities, all tickets will tie and fall back to creation date ordering
 - Story points are shown if available but don't affect priority resolution
-- Learned preferences require several invocations to build up; the first few runs use only static rules
-- The decision log is stored in a markdown file — it's human-readable but not a database; very long histories should be manually trimmed if needed

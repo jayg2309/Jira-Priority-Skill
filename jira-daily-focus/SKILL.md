@@ -27,13 +27,10 @@ in Cursor Settings > MCP). If it is not connected, tell the user:
 
 Then stop.
 
-## Step 0 — Load configuration and learned context
+## Step 0 — Load configuration
 
-Read **both** of these files from `.cursor/skills/jira-daily-focus/`
-(in the workspace root):
-
-1. `config.json`
-2. `PRIORITY-LOGIC.md`
+Read `config.json` from `.cursor/skills/jira-daily-focus/`
+(in the workspace root).
 
 `config.json` should contain:
 
@@ -58,13 +55,8 @@ Read **both** of these files from `.cursor/skills/jira-daily-focus/`
 Then create `config.json` with their answers (use the default status lists
 above). Confirm the file was created and proceed.
 
-From `PRIORITY-LOGIC.md`, pay attention to:
-- **Learned Preferences** (Section 2) — these override or supplement the
-  static rules when choosing which ticket to surface. Apply them.
-- **Decision Log** (Section 3) — scan recent entries for context on what
-  the user has been working on, any overrides, and feedback patterns.
-
-This context must inform your ticket selection in Steps 1-2.
+Also read `PRIORITY-LOGIC.md` for the static priority rules that govern
+ticket selection in Steps 1-2.
 
 ## Step 1 — Find in-progress tickets
 
@@ -189,42 +181,6 @@ Epic: [{parent_epic_key}]({jira_base_url}/browse/{parent_epic_key}) — {parent_
 2. [{key}]({jira_base_url}/browse/{key}) {summary} ({priority})
 3. [{key}]({jira_base_url}/browse/{key}) {summary} ({priority})
 ```
-
-## Step 7 — Record the decision (learning)
-
-After presenting the briefing, append a new entry to the **Decision Log**
-section (Section 3) of `PRIORITY-LOGIC.md`. Write it directly after the
-`<!-- DECISION-LOG-START -->` marker (before any older entries), so the
-most recent entry is always on top.
-
-Use this format:
-
-```
-### {today's date}
-- **Surfaced:** [{ticket_key}] {summary} ({priority}, {status})
-- **Reason:** {1-2 sentences on why this ticket won — cite the static
-  rule or learned preference that applied}
-- **Alternatives:** {list 2-3 other candidates with their priorities}
-- **User feedback:** (pending)
-- **Notes:** {anything notable — blockers cleared, EPIC nearing
-  completion, multiple in-progress tickets, etc.}
-```
-
-Set "User feedback" to `(pending)` initially.
-
-**If the user responds** with feedback after seeing the briefing (e.g.
-"no, I'll work on X instead", or "yes that's right", or asks a question
-about priority), update the latest entry's "User feedback" field:
-- `accepted` — user agreed with the recommendation
-- `overrode → [TICKET-KEY] reason: "{user's reason}"` — user chose
-  a different ticket; record which one and why
-- `no response` — user moved on without commenting on the choice
-
-**Synthesize preferences** when the log has 5+ entries: review all
-entries and update the "Learned Preferences" section (between the
-`<!-- LEARNED-PREFERENCES-START -->` and `<!-- LEARNED-PREFERENCES-END -->`
-markers) with any patterns you observe. Keep doing this every 5 new
-entries.
 
 ## Priority resolution
 
